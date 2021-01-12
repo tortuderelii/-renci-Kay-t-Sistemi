@@ -1,2 +1,2 @@
-# -renci-Kay-t-Sistemi
+# Ogrenci-Kayıt-Sistemi İskeleti
 Sqlsiz öğrenci kayıt sistemi
