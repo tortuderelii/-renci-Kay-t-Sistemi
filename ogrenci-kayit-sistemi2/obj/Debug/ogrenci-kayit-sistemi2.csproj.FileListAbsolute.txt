@@ -1,0 +1,12 @@
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\bin\Debug\ogrenci-kayit-sistemi2.exe.config
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\bin\Debug\ogrenci-kayit-sistemi2.exe
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\bin\Debug\ogrenci-kayit-sistemi2.pdb
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\obj\Debug\ogrenci-kayit-sistemi2.csprojAssemblyReference.cache
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\obj\Debug\ogrenci_kayit_sistemi2.Form1.resources
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\obj\Debug\ogrenci_kayit_sistemi2.Properties.Resources.resources
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\obj\Debug\ogrenci-kayit-sistemi2.csproj.GenerateResource.cache
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\obj\Debug\ogrenci-kayit-sistemi2.csproj.CoreCompileInputs.cache
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\obj\Debug\ogrenci-kayit-sistemi2.exe
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\obj\Debug\ogrenci-kayit-sistemi2.pdb
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\obj\Debug\ogrenci_kayit_sistemi2.Form4.resources
+C:\Users\volka\source\repos\ogrenci-kayit-sistemi2\obj\Debug\ogrenci_kayit_sistemi2.Form5.resources
