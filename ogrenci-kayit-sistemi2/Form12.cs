@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace ogrenci_kayit_sistemi2
 {
@@ -17,10 +18,14 @@ namespace ogrenci_kayit_sistemi2
             InitializeComponent();
 
         }
-        public string userName = "Volkan";
-        public string password = "12345";
+        //Veritabanına ulaşmamızı sağlayan komutlar
+        
+        SqlCommand command;
+        SqlDataReader read;
 
-       public bool passwordHold(bool a){
+
+       //Şifre görme ve kapama.
+        public bool passwordHold(bool a){
             
             
             if (a == true)
@@ -38,7 +43,7 @@ namespace ogrenci_kayit_sistemi2
             return a;
             
         }
-
+       SqlConnection conn = new SqlConnection("Data Source=DESKTOP-3OR4605;Initial Catalog=OgrenciVerileri;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
@@ -57,15 +62,28 @@ namespace ogrenci_kayit_sistemi2
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            if (textBox1.Text == userName && textBox2.Text == password)
-            {
-                Form4 giris = new Form4();
-                giris.Show();
-                this.Hide();
 
+            conn.Open();
+            command = new SqlCommand();
+            
+            command.Connection = conn;
+            command.CommandText = "Select * from girisbilgisi where kullaniciadi='" + textBox1.Text + "'and sifre ='" + textBox2.Text + "'";
+            //Okuyucu açıyoruz.
+            read = command.ExecuteReader();
+            //Şifre kontrolü sağlanıyor.
+            if (read.Read())
+            {
+                MessageBox.Show("Giriş Onaylandı.");
+                Form4 mainform = new Form4();
+                mainform.Show(this);
+                this.Hide();
             }
+                
             else
-                MessageBox.Show("HATALI GİRİŞ");
+                MessageBox.Show("Yanlış Şifre");
+            conn.Close();
+            
+
             
         }
 
