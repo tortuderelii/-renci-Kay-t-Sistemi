@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace ogrenci_kayit_sistemi2
 {
@@ -21,9 +22,34 @@ namespace ogrenci_kayit_sistemi2
 
 
         }
+        SqlConnection connect = new SqlConnection("Data Source=DESKTOP-3OR4605;Initial Catalog=OgrenciVerileri;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         //Row indexi tutmak için bu alana int verildi.
         int indexRow;
+        public object[] arr = new object[200];
+        public class Person
+        {
+            public string Name { get; set; }
+            public string Number { get; set; }
+            public string dogum { get; set; }
+            public string bolum { get; set; }
+            
+            public Person(string name, string schoolNumber,string birth,string depart)
+            {
+                Name = name;
+                Number = schoolNumber ;
+                dogum = birth;
+                bolum = depart;
+            }
+            
+        }
+        public void showInfos(string infos)
+        {
+            SqlDataAdapter Da = new SqlDataAdapter(infos, connect);
+            DataSet Ds = new DataSet();
+            Da.Fill(Ds);
+            dataGridView1.DataSource = Ds.Tables[0];
 
+        }
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -67,19 +93,7 @@ namespace ogrenci_kayit_sistemi2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //Kaydet butonu aksiyonu
-            int i = dataGridView1.Rows.Add();
-
-            dataGridView1.Rows[i].Cells[0].Value = textBox6.Text;
-            dataGridView1.Rows[i].Cells[1].Value = textBox1.Text;
-            dataGridView1.Rows[i].Cells[2].Value = textBox2.Text;
-            dataGridView1.Rows[i].Cells[3].Value = dateTimePicker1.Text;
-            dataGridView1.Rows[i].Cells[4].Value = textBox4.Text;
-            dataGridView1.Rows[i].Cells[5].Value = textBox5.Text;
-            dataGridView1.Rows[i].Cells[6].Value = textBox7.Text;
-
-            i++;
-
+           
 
 
 
@@ -89,70 +103,122 @@ namespace ogrenci_kayit_sistemi2
         private void Form4_Load(object sender, EventArgs e)
         {
 
-            //Form yüklendiğinde olacak
-
-            textBox10.Visible = false;
-            dataGridView1.ColumnCount = 8;
-            dataGridView1.Columns[0].Name = "İsim";
-            dataGridView1.Columns[1].Name = "Soyisim";
-            dataGridView1.Columns[2].Name = "dogumtarihi";
-            dataGridView1.Columns[3].Name = "dogumyeri";
-            dataGridView1.Columns[4].Name = "bolum";
-            dataGridView1.Columns[5].Name = "Okul numarasi";
-            dataGridView1.Columns[6].Name = "telefon";
-            dataGridView1.Columns[7].Name = "adres";
-
-
-
-
-
-
-
-
-
-
-
 
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //İNCELENECEK
-
-            if (dataGridView1.SelectedRows.Count > 0)
-
-            {
-                dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
-            }
-            else
-            {
-
-                MessageBox.Show("Silinecek veri seçilmedi.");
-                MessageBox.Show("Lütfen satırbaşından tutturun.");
-
-            }
-
-
-
-
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            DataGridViewRow newDataRow = dataGridView1.Rows[indexRow];
-            newDataRow.Cells[0].Value = textBox6.Text;
-            newDataRow.Cells[1].Value = textBox1.Text;
-            newDataRow.Cells[2].Value = textBox2.Text;
-            newDataRow.Cells[3].Value = dateTimePicker1.Text;
-            newDataRow.Cells[4].Value = textBox4.Text;
-            newDataRow.Cells[5].Value = textBox5.Text;
-            newDataRow.Cells[6].Value = textBox6.Text;
-
+            
 
 
         }
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+         
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            //Kaydet butonu aksiyonu
+            //Try-catch ile hata yakalayalım.
+            try
+            {
+                connect.Open();
+                SqlCommand takeCom = new SqlCommand("insert into Ogrenciler (ogrenciad,ogrencisoyad,ogrdate,ogrplace,department,ogrnum,ogrtel) values (@p1,@p2,@p3,@p4,@p5,@p6,@p7)", connect);
+                takeCom.Parameters.AddWithValue("@p1", textBox1.Text);
+                takeCom.Parameters.AddWithValue("@p2", textBox2.Text);
+                takeCom.Parameters.AddWithValue("@p3", dateTimePicker1.Value);
+                takeCom.Parameters.AddWithValue("@p4", textBox4.Text);
+                takeCom.Parameters.AddWithValue("@p5", textBox5.Text);
+                takeCom.Parameters.AddWithValue("@p6", textBox6.Text);
+                takeCom.Parameters.AddWithValue("@p7", textBox7.Text);
+                //Sorgular üzerindeki değişiklikleri kaydediyor.
+                takeCom.ExecuteNonQuery();
+                connect.Close();
+                showInfos("Select ogrnum as 'Öğrenci Numarası' , ogrenciad as Adı, ogrencisoyad as Soyadı, ogrdate as 'Doğum Tarihi' , ogrplace as 'Doğum Yeri' , department as Bölümü , ogrtel as Telefon from Ogrenciler");
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Hata oluştu. Tekrar Deneyin.");
+            }
+            
+
+
+
+
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            //Bütün öğrenci listesini getirdi.
+            showInfos("Select ogrnum as 'Öğrenci Numarası' , ogrenciad as Adı, ogrencisoyad as Soyadı, ogrdate as 'Doğum Tarihi' , ogrplace as 'Doğum Yeri' , department as Bölümü , ogrtel as Telefon from Ogrenciler");
+            
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            //İNCELENDİ.
+            // Sql veritabanından veri silme işlemi TakeCom özel seçilen bir Emirleyici.
+            try
+            {
+                connect.Open();
+                SqlCommand takeCom = new SqlCommand("delete from Ogrenciler where ogrnum=@num", connect);
+                takeCom.Parameters.AddWithValue("@num", textBox10.Text);
+                //Değişiklik onaylanıyor.
+                takeCom.ExecuteNonQuery();
+                showInfos("Select ogrnum as 'Öğrenci Numarası' , ogrenciad as Adı, ogrencisoyad as Soyadı, ogrdate as 'Doğum Tarihi' , ogrplace as 'Doğum Yeri' , department as Bölümü , ogrtel as Telefon from Ogrenciler");
+                connect.Close();
+                textBox10.Clear();
+
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Veri silinmesinde hata oluştu.");
+            }
+          
+
+
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            connect.Open();
+            SqlCommand takeCom = new SqlCommand("Update ogrenciler set ogrenciad='" + textBox1.Text + "',ogrencisoyad='" + textBox2.Text + "',ogrplace='" + textBox4.Text + "',department='" + textBox5.Text + "',ogrnum='" + textBox6.Text + "',ogrtel='" + textBox7.Text + "'where ogrnum='"+textBox6.Text+"'",connect);
+            takeCom.ExecuteNonQuery();
+            showInfos("Select ogrnum as 'Öğrenci Numarası' , ogrenciad as Adı, ogrencisoyad as Soyadı, ogrdate as 'Doğum Tarihi' , ogrplace as 'Doğum Yeri' , department as Bölümü , ogrtel as Telefon from Ogrenciler");
+            connect.Close();
+            textBox10.Clear();
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
             indexRow = e.RowIndex;
 
@@ -190,47 +256,22 @@ namespace ogrenci_kayit_sistemi2
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        private void textBox10_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
-            //İNCELENECEK
-            textBox10.Visible = true;
-            string asera = textBox10.Text;
-
-            while (dataGridView1.CurrentRow == null)
-            {
-
-                MessageBox.Show("selam");
-
-            }
-        }
-
-        private void textBox6_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox3_Enter(object sender, EventArgs e)
-        {
-
+            connect.Open();
+            SqlCommand cmd = new SqlCommand("Select * from Ogrenciler where ogrnum like '%" + textBox10.Text + "%'",connect);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            dataGridView1.DataSource = ds.Tables[0];
+            connect.Close();
         }
     }
 }
